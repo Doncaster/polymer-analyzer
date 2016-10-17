@@ -68,8 +68,16 @@ var hydrolysis = require('hydrolysis');
       resolver: {
         type:     String,
         value:    'xhr'
-      }
+      },
 
+	  /**
+	   * function that indicates which files should be ignored by
+	   * the import loader. By default all files not located under the dirname
+	   * of `href` will be ignored.
+	   */
+	  filter: {
+		type: Function
+	  }
     },
 
     ready: function() {
@@ -95,7 +103,7 @@ var hydrolysis = require('hydrolysis');
 
       var options = {
         clean:  this.clean,
-        filter: this.transitive ? function() { return false; } : null,
+        filter: this.transitive ? function() { return false; } : this.filter ? this.filter : null,
         attachAst: true,
         resolver: this.resolver
       };
